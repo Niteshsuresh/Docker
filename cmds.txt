@@ -1,2 +1,11 @@
 Docker frequently used commands
  docker ps -- list all available containers
+ docker search -- search the docker hub for images. sudo docker search ubuntu
+ docker pull <image> -- docker image will be downloaded from docker repository
+ docker images -- used to see all the downloaded images
+ docker rmi <<imageID>> -f -- To remove the image from local docker repository
+ docker logs <<containerID>> -- to get log writes in detached docker mode
+ docker run image -- creates an instance of an image, which is then called container. eg:- sudo docker -p 8080:8080 -p 50000:50000 jenkins
+ docker stop <<imageID>> -- stop the running instance of given image
+ 
+ 

@@ -38,7 +38,7 @@ Command:
 9  Check the docker version
 	sudo docker version
 
-10. TO get al supporting docker commands. 
+10. TO get all supporting docker commands. 
 	docker
 
  
