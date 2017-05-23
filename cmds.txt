@@ -17,4 +17,8 @@ Docker frequently used commands
  Sends SIGKILL]
  docker stats <<containerID>> -- provides the statistics of running container. Which including CPU and Memory utilization of the container.
  docker attach <<containerID>> -- we can get connected or attached to the running docker container.
+ docker pause <<containerID>> -- will pause the running processes in the docker container
+ docker unpause <<containerID>> -- will unpause the running processes in the docker container
+ sudo service docker start -- command used to start the docker daemon process
+ sudo service docker stop -- command used to stop the docker daemon process
  
