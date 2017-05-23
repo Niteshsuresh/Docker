@@ -5,7 +5,16 @@ Docker frequently used commands
  docker images -- used to see all the downloaded images
  docker rmi <<imageID>> -f -- To remove the image from local docker repository
  docker logs <<containerID>> -- to get log writes in detached docker mode
- docker run image -- creates an instance of an image, which is then called container. eg:- sudo docker -p 8080:8080 -p 50000:50000 jenkins
- docker stop <<imageID>> -- stop the running instance of given image
- 
+ docker run image -- creates an instance of an image, which is then called container. 
+	eg:- sudo docker -p 8080:8080 -p 50000:50000 jenkins
+		 sudo docker run -it centos /bin/bash 	
+ docker stop <<containerID>> -- [stop the running instance of given image. preserves the state of container in docker ps -a. 
+ Sends SIGTERM first then SIGKILL after a grace period.]
+ docker inspect <<imagename>> -- show the detailed information of image eg: sudo docker inspect jenkins 
+ docker top <<containerID>> -- show the top-level processes within a container
+ docker rm <<containerID>> -- 
+ [will remove the container from docker ps -a list, which looses its state of layered file systems written on top of image file system.
+ Sends SIGKILL]
+ docker stats <<containerID>> -- provides the statistics of running container. Which including CPU and Memory utilization of the container.
+ docker attach <<containerID>> -- we can get connected or attached to the running docker container.
  
