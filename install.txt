@@ -1,0 +1,46 @@
+1: Check the Linux kernel version
+	Should be greater than 3.8
+Command:
+	uname -a
+	
+2: Installing necessary certificates to work with Docker site later on to download necessary packages
+Command:
+	sudo install apt-transport-https ca-certificates	
+
+3. Download and import Dockers public key
+ curl -fsSL 'https://sks-keyservers.net/pks/lookup?op=get&search=0xee6d536cf7dc86e2d7d56f59a178ac6c6238f52e' | sudo apt-key add -
+
+4. Next Step is to add relevant docker package manager url to docker.list which is different for each of ubuntu version
+	Precise - 12.04
+	Trusty - 14.04
+	Wily - 15.10
+	Xenial - 16.04
+	
+	https://packages.docker.com/1.13/apt/repo ubuntu-precise main
+	https://packages.docker.com/1.13/apt/repo ubuntu-trusty main
+	https://packages.docker.com/1.13/apt/repo ubuntu-wily main
+	https://packages.docker.com/1.13/apt/repo ubuntu-xenial main
+
+	sudo apt-add-repository "deb https://packages.docker.com/1.13/apt/repo/ ubuntu-xenial main” 
+  
+5. Update the package manager
+	sudo apt-get update
+
+6. Issue, apt-cache to verify the package manager is pointing to the right repository
+	sudo apt-cache policy docker-engine
+
+7. For Ubuntu, Trusty, Willy and Xenial we need to install linux-image*
+	sudo apt-get install linux-image-$(uname -r) linux-image-extra-virtual
+
+8  Final step, install Docker 
+	sudo apt-get install -y docker-engine
+
+9  Check the docker version
+	sudo docker version
+
+10. TO get al supporting docker commands. 
+	docker
+
+ 
+ 
+	

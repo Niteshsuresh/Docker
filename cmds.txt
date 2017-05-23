@@ -1,0 +1,2 @@
+Docker frequently used commands
+ docker ps -- list all available containers
