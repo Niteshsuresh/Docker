@@ -1,0 +1,20 @@
+Step1: Create a file called Docker File and edit it in vim. Please note, the file name should be "DockerFile" should start with capital D
+Step2: Build docker file using following instructions
+	FROM ubuntu
+	MAINTAINER neethiwin@gmail.com
+	
+	RUN apt-get update
+	RUN apt-get install -y nginx
+	CMD ["echo", "Image created"]
+
+Step3: Build the Docker File using below command
+	docker build -t ImageName:TagName <dir>
+	Where 
+	-t - is to mention a tag to the image
+	ImageName - Name of the container
+	TagName - A tag to the image
+	dir - The directory where the docker file is present
+	
+	eg:- docker build -t myimage:0.1 /docker/
+
+

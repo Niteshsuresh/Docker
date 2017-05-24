@@ -22,7 +22,8 @@ Docker frequently used commands
  sudo service docker start -- command used to start the docker daemon process
  sudo service docker stop -- command used to stop the docker daemon process
  Cntrl + P + Q -- To exit the program and or type exit
- 
+ --------------------------------------------------------------------------------------
+
  nsenter command to help in exiting container without destroying it
  1. docker run --rm -v /usr/local/bin:/target jpetazzo/nsenter
  2. Find Pid using docker inspect. sudo docker inspect <<containerId>> | grep Pid
