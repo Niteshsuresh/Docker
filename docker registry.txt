@@ -1,0 +1,9 @@
+1. Instead of using DockerHub public repository, we can manage containers in our own
+private repository.
+	For this, we need to download repository container from docker. 
+	a. To setup, we need to download private registry.
+		sudo docker run -d -p 5000:5000 --name registry registry:2
+		registry -> container managed by Docker to host private repositories
+		port -> 5000 is port no exposed by container. Using -p we mapping 5000 with local port 5000
+		-d is used to run container in detached mode. so that, its goes into the background process.
+	

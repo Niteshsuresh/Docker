@@ -5,7 +5,7 @@ Command:
 	
 2: Installing necessary certificates to work with Docker site later on to download necessary packages
 Command:
-	sudo install apt-transport-https ca-certificates	
+	sudo apt-get install apt-transport-https ca-certificates	
 
 3. Download and import Dockers public key
  curl -fsSL 'https://sks-keyservers.net/pks/lookup?op=get&search=0xee6d536cf7dc86e2d7d56f59a178ac6c6238f52e' | sudo apt-key add -
@@ -42,5 +42,7 @@ Command:
 	docker
 
  
- 
+Refer the below link to install ubuntu on docker 
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04 
+
 	

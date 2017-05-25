@@ -16,5 +16,20 @@ Step3: Build the Docker File using below command
 	dir - The directory where the docker file is present
 	
 	eg:- docker build -t myimage:0.1 /docker/
+	For current directory, please use docker build -t myimage:0.1 .
+	
+	if current directory contains the docker file, then issue dot (.) extension
+	eg:- docker build -t myimage:0.1 .
+	
+Step4: Push Docker build dockerhub
+	Login to dockerhub
+	sudo docker login
+	Enter the dockerid and password
+	First tag the build
+	sudo docker tag <<imageID>> <<repositoryname>>
+	eg:- sudo docker tag 71b8f5f2c029 neethirocks/testrepo:1.0
+	then push docker file to dockerhub.com
+	sudo docker push <<repositoryname>>
+	
 
 
