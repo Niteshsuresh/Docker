@@ -7,3 +7,4 @@ private repository.
 		port -> 5000 is port no exposed by container. Using -p we mapping 5000 with local port 5000
 		-d is used to run container in detached mode. so that, its goes into the background process.
 	
+	

@@ -1,0 +1,13 @@
+﻿Install Samba server
+openssl genrsa -out client.key 4096
+sudo openssl genrsa -out client.key 4096
+openssl req -new -x509 -text client.key -out client.cert
+sudo openssl req -new -x509 -text -key client.key -out client.cert
+sudo apt-get install samba
+sudo smbpasswd -a nitesh
+sudo chown nitesh cert-client/
+sudo vi /etc/samba/smb.conf
+
+
+sudo smbget -a "smb://172.30.13.142/cert" -u nitesh
+
