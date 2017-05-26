@@ -1,0 +1,21 @@
+Docker has a host of instruction commands
+
+CMD 
+Syntax
+	CMD command param1
+	options
+		command - The command used to run when container is launched
+		param1 - The parameter entered to the command
+
+eg:-
+	CMD ["echo", "Hello world"]
+
+
+ENTRYPOINT - Similar to CMD but we get more flexibility with ENTRYPOINT
+Syntax	
+	ENTRYPOINT command param1
+	options
+		command - The command used to run when container is launched
+		param1 - The parameter entered to the command
+eg:-
+	ENTRYPOINT ["echo"]

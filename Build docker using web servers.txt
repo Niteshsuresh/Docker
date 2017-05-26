@@ -1,0 +1,30 @@
+Building docker containers using Apache web server on ubuntu.
+
+1. Let's build docker image for web server.
+		FROM ubuntu 
+		RUN apt-get update 
+		RUN apt-get install –y apache2 
+		RUN apt-get install –y apache2-utils 
+		RUN apt-get clean 
+		EXPOSE 80
+		CMD [“apache2ctl”, “-D”, “FOREGROUND”]
+	
+	We are first creating our image from the base ubuntu image
+	We are running update all the packages cmd
+	We are running apache2 cmd to install apache2 server
+	We are running apache2-utils cmd to install necessary apache2 utilities
+	We are running clean cmd to remove all unnecessary files
+	The EXPOSE cmd is used to expose port 80 of apache container to Docker host
+	Finally, the CMD command is used to run apache2 in the background
+	
+2. Create container from the image
+	sudo docker run -d -p 80:80 mywebserver
+	
+	The port no exposed by container is 80
+	using -p option, we are mapping the same port number to the 80 port of localhost
+	using -d option, we are running the container in detached mode. So that the container runs in the background.
+	
+
+
+	
+
