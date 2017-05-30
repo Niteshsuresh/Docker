@@ -1,0 +1,1 @@
+Container linking allows multiple containers to talk to each other but not through the ports.

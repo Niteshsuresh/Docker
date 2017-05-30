@@ -19,3 +19,19 @@ Syntax
 		param1 - The parameter entered to the command
 eg:-
 	ENTRYPOINT ["echo"]
+
+ENV - Used to set environment variables in the container
+Syntax
+	ENV key value
+	options
+		key - key for the environment variable
+		value - value for the environment variable
+eg:-
+	ENV var1=value1 var2=value2
+
+WORKDIR - This command creates a folder inside container as a working directory
+Syntax
+	WORKDIR dirname
+eg:- WORKDIR /roottmp
+
+		

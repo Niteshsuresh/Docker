@@ -3,4 +3,5 @@ adduser username
 Make a user as sudo
 usermod -aG sudo username
 
-172.30.13.142
+netstat -tulpn |grep :80
+

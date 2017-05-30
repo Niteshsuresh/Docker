@@ -1,0 +1,15 @@
+Docker has multiple storage drivers that allows one to work with the underlying storage devices.
+-------------------------------
+Technology -> Storage Driver
+-------------------------------
+OverlayFS -> overlay or overlay2
+AUFS -> aufs
+Btrfs -> brtfs
+Device Manager -> devicemanager
+VFS -> vfs
+ZFS -> zfs
+-------------------------------
+
+
+Overlay
+
