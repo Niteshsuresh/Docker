@@ -1,0 +1,123 @@
+	Scale & High Availability
+	 -To achieve scalability and high availability, we created hardware virtualization and created cluster with load balancing.
+	Service - Oriented Architecture
+	 -service components decoupled from web. However the problem still stays where we will end up with too many binaries
+	Hardware Virtualization 
+	 -Can work on both on cloud and on-premises. Can developed with chef and other tools. However, we might have networking related challenges.
+		Microservices
+		-clear code, scale development and closer to single responsibility. However, too many chunks
+		Microservices + Container Runtime
+		-Many configurations even at development
+			Container Orchestration
+				- To overcomes those challenges, an automation came in to picture
+				- Scheduling, coordination and management
+				
+Container Orchestration
+	Scheduling - 
+	Coordination - 
+	Management - Service and Resource Management
+
+Required Functional abilities	
+	Scheduling
+		-Placement
+		 Putting it some where 
+		-Replication/Scaling
+		 Making more than one instance
+		-Resurrection
+		 Bringing the backup at the same node at during the failures
+		-Rescheduling
+		  ability to server through other means during node failure	
+		-Rolling Deployment
+		  rolling new features or binary without any downtime	
+			-Upgrades
+			-Downgrades
+		-Collocation
+		  putting more than one container in the same machine and make sure they we are together
+	  
+	Resource Management - Ability to manage electronically.
+	 -Memory
+	 -CPU
+	 -GPU
+	 -Volumes
+	 -Ports
+	 _IP
+	 
+	Service Management
+	-Labels
+	-Groups/Namespaces
+	-Dependencies
+	-Load balancing
+	-Readiness checking
+	
+Required Non-Functional abilities
+	-Scalability i.e. performance, responsiveness and efficiency
+	-Usability i.e. Familiarity, Maintainability, Compatibility, Debuggability
+	-Availability i.e. Fault Tolerance, Robustness, Reliability, Resilience, Disaster Recovery
+	-Flexibility i.e. Format Support, Portability, Interoperability, Extensibility
+	-Portability i.e Container Runtimes, Host OS, Hosted, Cloud, Bare-Metal
+	-Security i.e. Auditability, Secrets Management, Encryption, Isolation
+	
+
+Container Operations
+	-Application Development Lifecycle (How to code in development gets into production seamlessly)		
+		Source repo, Continuous Integration, Artifact Repo
+	-Container Orchestration
+		Scheduling, Resource management, Service management
+	
+	 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _	
+	|																|
+	|					Application & Services                      |
+	|  _ _ _ _ _ _ _ _    _ _ _ _ _ _ _ _ _   _ _ _ _ _ _ _ _ _ _   |
+	| |				  |	  |               |   |  				|   |
+	| | Source Cntrl  |   | Continuous    |   |   Artifact      |   |
+	|   - - - - - - - -	  |  Integration  |   | Repository      |   |
+	|                     |_ _ _ _ _ _ _ _|   |_ _ _ _ _ _ _ _ _|   |
+	|																|
+	|	_ _	 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _   	|
+	|  |			                							|	|	
+	|  |						Orchestration		            |   |      
+	|  |				                                        |   |
+	|	- - - - - - - - - - - - - - - - - - - - - - - - - - - -	    |
+	|																|		
+	|_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|
+	
+
+Debugging and Maintenance
+
+	Debugging
+		- Logging & Metrics
+			- Emitting
+			- Aggregation
+			- Search
+			- Reporting
+			- Alerting
+			- Dashboards
+		- Shell Access
+		
+	Maintenance
+		- Package Management
+		- Upgrading
+		- Cluster Resizing
+		- Application Autoscaling
+		- Capacity Planning
+		- Software Defined Networking
+		- Backups
+		- Disaster Recovery
+		
+		
+	Container Operations
+							_ _ _ _ _ _
+						   |User Space |
+	   _ _ _ _ _			- - - - - -			
+	  |	Source	|			Continuous 				Artifact
+	  |	Control	|			Integration				Repository	
+	   - - - - -
+		
+							System Space
+							
+	_ _ _ _ _ _ _ 											     _ _ _ _ _ _ _ _
+	|Load Balancer|												|Package Manager|
+	- - - - - - -												 - - - - - - - -
+	
+					Networking			Logging & Metrics
+	Security														Storage

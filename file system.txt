@@ -1,0 +1,24 @@
+File System
+
+	File system controls the way data is stored and retrieved. Without file system the information stored in a medium
+	would be one large body of data with no way to tell where data starts and ends.
+	
+	By separating the data into pieces where each piece is an isolated information and called as "file". The structure and logic
+	used to manage such system is known as a file system
+	
+	A file system consists of two or three layers. 
+	
+	Logical, virtual and physical file system.
+	> Physical file system is concerned with the physical operation of the storage devices. It processes physical blocks being read or
+	  written. 
+	  Handles buffering and memory management and is responsible for the physical placement of the blocks in specific locations on the
+	  storage medium. They interact with device drivers to operate on storage devices.	  
+	
+	> Virtual file system
+	  This interface allows multiple concurrent physical file systems, each of which is a physical file system		
+	
+	> Logical file system is responsible for interaction with user application. It provides application program interface (API) for 
+	  file operations - OPEN, CLOSE, READ etc. Providers "file access, directory operations, security and protection"	
+	
+
+	

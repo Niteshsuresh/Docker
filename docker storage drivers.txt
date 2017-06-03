@@ -12,12 +12,33 @@ Images and Layers
 	CMD python /app/app.py
 	
 	Here, there are four commands, each of which creates a layer. 
-	When we create a new container, we are adding a new writable layer on top of the underlying layers. This writable layer
-	is often called "container layer".
+	When we create a new container, we are adding a new writeable layer on top of the underlying layers (R/O image layers). This writeable layer
+	is often called "container layer". Also called a thin R/W layer.
 	All changes made to the running container, such as writing new files, modifying existing files and deleting files are
 	written to this thin layer
 	
 	Refer: 
 	![ScreenShot]https://docs.docker.com/engine/userguide/storagedriver/images/container-layers.jpg
+	
+	The storage driver handles the details about the way these layers interact with each other.
+	
+Containers and layers
+	Multiple container layer with R/W access can share the common underlying layers and continue to have their own
+	data state
+	
+	![ScreenShot]https://docs.docker.com/engine/userguide/storagedriver/images/sharing-layers.jpg
+	
+	If we need to share the data across the containers, then one way to do this it to create docker volume
+	and mount it to container
+	
+Docker Volume
+	Before we understand about docker volume, let step back and understand how to data can be managed in containers.
+	There are primarily two ways we can manage data with Docker Engine
+	1. Data volumes
+	2. Data volume containers
+	
+	Note: Its important to know about Union mount. Union mounting is a way of combining multiple directories into one that
+	appears to contain combined contents
+	
 	
 	
