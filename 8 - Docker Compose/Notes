@@ -1,0 +1,11 @@
+Docker Compose
+ - Was build by the docker community to address the problem orchestrating multiple
+   Containers into one app solution
+ - Initally it was called Fig and later it was re-branded as "Docker compose"
+ - A tool used to defining and running multi-container application in an easy way.
+
+At first, we need to create a file called docker-compose.yml
+
+
+
+

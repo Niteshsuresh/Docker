@@ -1,0 +1,73 @@
+Docker Volume
+-------------
+
+With Docker volume, we can manage data inside and between the containers.
+Fundamentally, we can separate out the container lifecycle from the data.
+This is required as we want to keep these separate, 
+so that the data generated is not destroyed or tied up to the container lifecycle.
+
+There are two primary ways we manage data with Docker Engine
+ a. Data volumes
+ b. Data volume containers
+
+Data volumes
+ 1. A data volume is a specially designed directory in the container
+ 2. Its initialized when container is created. By default, its not delated when container is
+    deleted or stopped. 
+ 3. With the option -v during container rm, the volume gets destroyed
+ 4. Can be independently updated
+ 5. Can be shared across the containers
+ 6. Plus with read-only mode
+
+	> Mounting a Data Volume
+	 Lets first see how to mount a data volume in our container
+	 To do that by creating container from the image BUSYBOX with -v option to mount a volume
+
+		 docker run -it -v /data --name container1 busybox
+	
+	 Once we cd in, we should be able to see data folder in it. Let's create a file inside it and exit the container
+	 The location where the data volume created will be retained eventhough container was exited or removed.
+	 
+	 To find out the location of where the file was left behind
+		we can do, docker inspect <<container-name>> which returns the JSON data containing the path information on the host machine
+		For example, the path can look like this,
+		/var/lib/docker/volumes/f0b5f9c6ce979e77861dc4abfef3a47e14cde13d8f9628759fc406c037c72b62/_data
+
+	Note:
+	  If we have stopped the container and reuse then probably you want use docker "restart" and "attach"
+
+	> Mounting a Host Directory as a Data Volume
+	 Now lets look at mounting existing host folder in the Docker container.
+	 	
+		docker run -it --name container1 -v /opt/code:/datavol busybox
+
+
+	We can list all existing volumes created in docker using,
+	  
+		docker volume ls
+
+	We can remove unused docker volumes using,
+
+		docker volume prune
+
+  
+Data volume containers
+ This part is to create containers as a data volumes. This strategy useful especially when we shared data
+ across the containers
+ 
+ To do this, we follow below steps.
+  1. We first create a Data volume container
+  2. create another container and mount the volume from the container created in step1
+
+
+
+
+
+ 
+
+
+
+ 
+
+ 
+

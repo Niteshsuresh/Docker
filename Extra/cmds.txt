@@ -39,4 +39,8 @@ Docker frequently used commands
  
  sudo docker kill <<containerID>>
  
- 1646
+
+docker network ls - lists all avaliable networks
+docker network inspect <<network name>> -- gets the complete information about the network
+
+

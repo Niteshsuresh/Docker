@@ -1,0 +1,17 @@
+Proper way to run docker images
+
+1. We need spin up the image by docker run cmd
+	docker run <imagename>
+	Use 
+	--it to run in interactive mode
+	--d to run in detached mode [useful when we want to host software/services)
+
+2. If the container was running detach mode and if we need to start the shell
+	docker exec -it CONTAINER_NAME/id bash
+
+3. If the container is stopped or exited, to start it again
+	docker start CONTAINER_NAME/id
+
+
+
+

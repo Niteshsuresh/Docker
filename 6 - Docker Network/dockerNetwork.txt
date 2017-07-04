@@ -1,0 +1,48 @@
+# Docker Network default bridge inspect and new network setup
+
+By default, docker runs containers under bridge network. Each of the container gets it IP address assigned in the network.
+
+We can find the no of containers running in the perticular network using docker network inspect.
+
+# docker network inspect bridge would produce below output
+[
+    {
+        "Name": "bridge",
+        "Id": "796188e129a4a73be71fe2e3d661ac10770ebd8eef98e64b71ddf7c0e7f362f5",
+        "Created": "2017-06-21T12:22:44.073262535+05:30",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Containers": {
+            "1d2966f84a38326c2f91a9e0603a8508475cc0be7da6f2370df252f83e09702f": {
+                "Name": "mystifying_davinci",
+                "EndpointID": "5287f80a864fd07fbe917f44c332792c50f9819ce447a4413e9d3a8124a7eb8f",
+                "MacAddress": "02:42:ac:11:00:02",
+                "IPv4Address": "172.17.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {
+            "com.docker.network.bridge.default_bridge": "true",
+            "com.docker.network.bridge.enable_icc": "true",
+            "com.docker.network.bridge.enable_ip_masquerade": "true",
+            "com.docker.network.bridge.host_binding_ipv4": "0.0.0.0",
+            "com.docker.network.bridge.name": "docker0",
+            "com.docker.network.driver.mtu": "1500"
+        },
+        "Labels": {}
+    }
+]
+
