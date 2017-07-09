@@ -1,0 +1,188 @@
+delimiter $$
+create procedure getStateOfCity(
+	in cityName varchar(25), 
+	out stateName varchar(25))
+begin
+	if cityName = 'Bangalore' then
+		set stateName = 'Karnataka';
+		select 'Executing if';
+	elseif cityName = 'Bengaluru' then
+		set stateName = 'Karnataka';
+		select 'Executing else if';	
+	else 
+		select 'Executing else';
+	end if;
+end $$
+delimiter ;
+call getStateOfCity('Bangalore', @state);
+
+
+-- Create a function to return state name
+delimiter $$
+create function 
+	getStateNameOfACity(cityName varchar(25)) 
+	returns varchar(25) deterministic
+begin
+	declare stateName varchar(25) default 'Invalid';
+
+	if cityName = 'Bangalore' then
+		set stateName = 'Karnataka';
+	elseif cityName = 'Bengaluru' then
+		set stateName = 'Karnataka';
+	end if;
+return (stateName);
+end  $$
+delimiter ;
+
+select getStateNameOfACity('Bangalore');
+
+
+-- Call stored procedure to return the state name of a city
+delimiter $$
+create procedure getStateNameOfCity(
+	in cityName varchar(25), 
+	out stateName varchar(25))
+begin
+	select getStateNameOfACity(cityName) into stateName;
+end $$
+delimiter ;
+
+call getStateNameOfCity('Bangalore', @state);
+select @state as 'State Name';
+
+-- --------------------------------------------
+delimiter $$
+create procedure getStateName(inout stateName varchar(25))
+begin
+	select getStateNameOfACity(stateName) into stateName;
+end $$
+delimiter ;
+
+set @temp = 'Bangalore';
+call getStateName(@temp);
+select @temp as 'State Name';
+
+-- --------------------------------------------
+delimiter $$
+create procedure getStateNameCase(inout temp varchar(25))
+begin
+	CASE temp
+		WHEN  'Bengaluru' THEN
+		            SET temp = 'Karnataka';
+		WHEN 'Bangalore' THEN
+		           SET temp = 'Karnataka';
+		ELSE
+		           SET temp = 'Invalid';
+	END CASE;
+end $$
+delimiter ;
+
+set @temp = 'Bangalor';
+call getStateNameCase(@temp);
+select @temp as 'State Name';
+
+MySQL provides both IF and CASE statements to enable you to execute a block of SQL code based on certain conditions, which is known as flow control. So what statement should you use? For the most developers, choosing between IF and CASE is just a matter of personal preference. However when you decide to use IF or CASE,  you should take the following points into the consideration:
+•	A simple CASE statement is more readable than the IF statement when you compare a single expression against a range of unique values.  In addition, the simple CASE statement is more efficient than the IF statement.
+•	When you check complex expressions based on multiple values, the IF statement is easier to understand.
+•	If you choose to use the CASE statement, you have to make sure that at least one of the CASE condition is matched. Otherwise you need to define an error handle to catch the error. Recall that you don’t have to do this with the IF statement.
+•	In most organization, there is always something called development guidelines document that provides developers with naming convention and guidelines on programming style. You should refer to this document and follow the development practices.
+•	In some situations, mixing between IF and CASE make your stored procedure more readable and efficient.
+
+
+
+-- ----------------------------------------------------------------
+delimiter $$
+CREATE PROCEDURE WhileLoopProc()
+       BEGIN
+               DECLARE x  INT;
+               DECLARE str  VARCHAR(255);
+               SET x = 1;
+               SET str =  '';
+               WHILE x  <= 5 DO
+                           SET  str = CONCAT(str, x, '  ');
+                           SET  x = x + 1;
+               END WHILE;
+               SELECT str;
+       END$$
+   DELIMITER ;
+
+call WhileLoopProc();
+-- --------------------------------
+DELIMITER $$
+CREATE PROCEDURE RepeatLoopProc()
+       BEGIN
+               DECLARE x  INT;
+               DECLARE str  VARCHAR(255);
+               SET x = 1;
+               SET str =  '';
+               REPEAT
+                           SET  str = CONCAT(str,x,',');
+                           SET  x = x + 1;
+               UNTIL x  > 5
+               END REPEAT;
+               SELECT str;
+       END$$
+DELIMITER ;
+
+call RepeatLoopProc();
+-- --------------------------------------------------------
+DELIMITER $$
+CREATE PROCEDURE LoopProcedure()
+       BEGIN
+               DECLARE x  INT;
+               DECLARE str  VARCHAR(255);
+               SET x = 1;
+               SET str =  '';
+               loop_label:  LOOP
+                           IF  x > 10 THEN
+                               LEAVE  loop_label;
+                           END  IF;
+                           SET  x = x + 1;
+                           IF  (x mod 2) THEN
+                               ITERATE  loop_label;
+                           ELSE
+                               SET  str = CONCAT(str,x,',');
+                           END  IF;
+                END LOOP;    
+               SELECT str;
+       END$$
+DELIMITER ;
+
+
+-- TRIGGERS
+CREATE TABLE employees (
+    id int(11) NOT NULL AUTO_INCREMENT,
+    employee_no int(11) NOT NULL,
+    first_name varchar(50) not null,
+    last_name varchar(50) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+
+CREATE TABLE employees_update_audit (
+    id int(11) NOT NULL AUTO_INCREMENT,
+    employeeNumber int(11) NOT NULL,
+    lastname varchar(50) NOT NULL,
+    changedon datetime DEFAULT NULL,
+    action varchar(50) DEFAULT NULL,
+    PRIMARY KEY (id)
+);
+
+DELIMITER $$
+CREATE TRIGGER before_employee_update
+    BEFORE UPDATE ON employees
+    FOR EACH ROW 
+BEGIN
+ 
+    INSERT INTO employees_update_audit
+    SET action = 'update',
+        employeeNumber = OLD.employee_no,
+        lastname = OLD.last_name,
+        changedon = NOW();
+END$$
+DELIMITER ;
+
+insert into employees(employee_no, first_name, last_name) values(1002, 'Chandra', 'S');
+UPDATE employees SET last_Name = 'Shekhar' WHERE employee_no = 1002;
+select * from employees;
+select * from employees_update_audit;

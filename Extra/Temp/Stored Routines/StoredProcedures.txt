@@ -1,0 +1,413 @@
+-----------------------------------------------------------------------
+MySQL IF statement examples
+-----------------------------------------------------------------------
+DELIMITER $$
+ 
+CREATE PROCEDURE GetCustomerLevel(
+    in  p_customerNumber int(11), 
+    out p_customerLevel  varchar(10))
+BEGIN
+    DECLARE creditlim double;
+ 
+    SELECT creditlimit INTO creditlim
+    FROM customers
+    WHERE customerNumber = p_customerNumber;
+ 
+    IF creditlim > 50000 THEN
+ SET p_customerLevel = 'PLATINUM';
+    ELSEIF (creditlim <= 50000 AND creditlim >= 10000) THEN
+        SET p_customerLevel = 'GOLD';
+    ELSEIF creditlim < 10000 THEN
+        SET p_customerLevel = 'SILVER';
+    END IF;
+ 
+END$$
+-----------------------------------------------------------------------
+
+MySQL CASE Statement
+-----------------------------------------------------------------------
+Besides the IF statement, MySQL also provides an alternative conditional statement called MySQL CASE. 
+The MySQL CASE statement makes the code more readable and efficient.
+
+There are two forms of the CASE statements: simple and searched CASE statements.
+
+Simple CASE statement
+Let’s take a look at the syntax of the simple CASE statement:
+CASE  case_expression
+   WHEN when_expression_1 THEN commands
+   WHEN when_expression_2 THEN commands
+   ...
+   ELSE commands
+END CASE;
+You use the simple CASE statement to check the value of an expression against a set of unique values.
+
+The case_expression can be any valid expression. We compare the value of the case_expression with  
+when_expression in each WHEN clause e.g., when_expression_1, when_expression_2, etc. 
+If the value of the case_expression and when_expression_n are equal, the  commands in the corresponding 
+WHEN branch executes.
+
+In case none of the when_expression in the WHEN clause matches the value of the case_expression, the 
+commands in the ELSE clause will execute. The ELSE clause is optional. If you omit the ELSE clause and 
+no match found, MySQL will raise an error.
+
+The following example illustrates how to use the simple CASE statement:
+DELIMITER $$
+ 
+CREATE PROCEDURE GetCustomerShipping(
+ in  p_customerNumber int(11), 
+ out p_shiping        varchar(50))
+BEGIN
+    DECLARE customerCountry varchar(50);
+ 
+    SELECT country INTO customerCountry
+ 		FROM customers
+		WHERE customerNumber = p_customerNumber;
+ 
+    CASE customerCountry
+ WHEN  'USA' THEN
+    SET p_shiping = '2-day Shipping';
+ WHEN 'Canada' THEN
+    SET p_shiping = '3-day Shipping';
+ ELSE
+    SET p_shiping = '5-day Shipping';
+ END CASE;
+ 
+END$$
+
+____________________________________________________________________________________
+How the stored procedure works.
+
+The GetCustomerShipping stored procedure accepts customer number as an IN parameter and returns 
+shipping period based on the country of the customer.
+Inside the stored procedure, first we get the country of the customer based on the input customer number. 
+Then we use the simple CASE statement to compare the country of the customer to determine the shipping period. 
+If the customer locates in USA, the shipping period is 2-day shipping. If the customer is in Canada, 
+the shipping period is 3-day shipping. 
+The customers from other countries have 5-day shipping.
+
+The following is the test script for the stored procedure above:
+SET @customerNo = 112;
+ 
+SELECT country into @country
+FROM customers
+WHERE customernumber = @customerNo;
+ 
+CALL GetCustomerShipping(@customerNo,@shipping);
+ 
+SELECT @customerNo AS Customer,
+       @country    AS Country,
+       @shipping   AS Shipping;
+
+____________________________________________________________________________________
+
+Searched CASE statement
+____________________________________________________________________________________
+
+The simple CASE statement only allows you match a value of an expression against a set of distinct values. In order to perform more complex matches such as ranges you use the searched CASE statement. The searched CASE statement is equivalent to the IF statement, however its construct is much more readable.
+
+The following illustrates the syntax of the searched CASE statement:
+
+CASE
+    WHEN condition_1 THEN commands
+    WHEN condition_2 THEN commands
+    ...
+    ELSE commands
+END CASE;
+
+
+MySQL evaluates each condition in the WHEN clause until it finds a condition whose value is TRUE, then corresponding commands in the THEN clause will execute.
+
+If no condition is TRUE , the command in the ELSE clause will execute. If you don’t specify the ELSE clause and no condition is TRUE, MySQL will issue an error message.
+
+MySQL does not allow you to have empty commands in the THEN or ELSE clause. If you don’t want to handle the logic in the ELSE clause while preventing MySQL raise an error, you can put an empty BEGIN END block in the ELSE clause.
+
+The following example demonstrates using searched CASE statement to find customer level SILVER, GOLD or PLATINUM based on customer’s credit limit.
+
+DELIMITER $$
+ 
+CREATE PROCEDURE GetCustomerLevel(
+ in  p_customerNumber int(11), 
+ out p_customerLevel  varchar(10))
+BEGIN
+    DECLARE creditlim double;
+ 
+    SELECT creditlimit INTO creditlim
+ FROM customers
+ WHERE customerNumber = p_customerNumber;
+ 
+    CASE  
+ WHEN creditlim > 50000 THEN 
+    SET p_customerLevel = 'PLATINUM';
+ WHEN (creditlim <= 50000 AND creditlim >= 10000) THEN
+    SET p_customerLevel = 'GOLD';
+ WHEN creditlim < 10000 THEN
+    SET p_customerLevel = 'SILVER';
+ END CASE;
+ 
+END$$
+If the credit limit is
+
+greater than 50K, then the customer is PLATINUM customer
+less than 50K and greater than 10K, then the customer is GOLD customer
+less than 10K, then the customer is SILVER customer.
+We can test our stored procedure by executing the following test script:
+
+CALL GetCustomerLevel(112,@level);
+SELECT @level AS 'Customer Level';
+
+
+
+____________________________________________________________________________________
+Loop in Stored Procedures
+____________________________________________________________________________________
+MySQL provides loop statements that allow you to execute a block of SQL code repeatedly based on a condition. There are three loop statements in MySQL: WHILE, REPEAT and LOOP.
+
+We will examine each statement in more detail in the following section.
+
+WHILE loop
+The syntax of the WHILE statement is as follows:
+WHILE expression DO
+   Statements
+END WHILE
+The WHILE loop checks the expression at the beginning of each iteration. 
+If  the expression evaluates to TRUE,  MySQL will executes statements between WHILE and END WHILE 
+until the expression evaluates to FALSE. The WHILE loop is called pretest loop because it checks 
+the expression before the statements execute.
+
+
+Here is an example of using the WHILE loop statement in stored procedure:
+ DELIMITER $$
+ DROP PROCEDURE IF EXISTS WhileLoopProc$$
+ CREATE PROCEDURE WhileLoopProc()
+       BEGIN
+               DECLARE x  INT;
+               DECLARE str  VARCHAR(255);
+               SET x = 1;
+               SET str =  '';
+               WHILE x  <= 5 DO
+                           SET  str = CONCAT(str,x,',');
+                           SET  x = x + 1; 
+               END WHILE;
+               SELECT str;
+       END$$
+   DELIMITER ;
+In the stored procedure above:
+
+First, we build str string repeatedly until the value of the x variable is greater than 5.
+Then, we display the final string using the SELECT statement.
+Notice that if we don’t initialize x variable, its default value is NULL. 
+Therefore the condition in the WHILE loop statement is always TRUE and you will have a indefinite loop, 
+which is not expected.
+
+REPEAT loop
+The syntax of the REPEAT loop statement is as follows:
+REPEAT
+Statements;
+UNTIL expression
+END REPEAT
+First, MySQL executes the statements, and then it evaluates the expression. 
+If the expression evaluates to FALSE, MySQL executes the statements repeatedly until the expression 
+evaluates to TRUE.
+
+Because the REPEAT loop statement checks the expression after the execution of statements therefore 
+the REPEAT loop statement is also known as post-test loop.
+
+We can rewrite the stored procedure that uses WHILE loop statement above using the REPEAT loop statement:
+ DELIMITER $$
+ DROP PROCEDURE IF EXISTS RepeatLoopProc$$
+ CREATE PROCEDURE RepeatLoopProc()
+       BEGIN
+               DECLARE x  INT;
+               DECLARE str  VARCHAR(255);
+               SET x = 1;
+               SET str =  '';
+               REPEAT
+                           SET  str = CONCAT(str,x,',');
+                           SET  x = x + 1; 
+               UNTIL x  > 5
+               END REPEAT;
+               SELECT str;
+       END$$
+ DELIMITER ;
+It is noticed that there is no delimiter semicolon (;) in the UNTIL expression.
+
+LOOP, LEAVE and ITERATE Statements
+The LEAVE statement allows you to exit the loop immediately without waiting for checking the condition. 
+The LEAVE statement works like the  break statement in other languages such as PHP, C/C++, Java, etc.
+
+The ITERATE statement allows you to skip the entire code under it and start a new iteration. 
+The ITERATE statement is similar to the continue statement in PHP, C/C++, Java, etc.
+
+MySQL also gives you a LOOP statement that allows you to execute a block of code repeatedly with an 
+additional flexibility of using a loop label.
+
+The following is an example of using the LOOP loop statement.
+ DELIMITER $$
+ DROP PROCEDURE IF EXISTS LOOPLoopProc$$
+ CREATE PROCEDURE LOOPLoopProc()
+       BEGIN
+               DECLARE x  INT;
+               DECLARE str  VARCHAR(255);
+               SET x = 1;
+               SET str =  '';
+               loop_label:  LOOP
+                           IF  x > 10 THEN
+                               LEAVE  loop_label;
+                           END  IF;
+                           SET  x = x + 1;
+                           IF  (x mod 2) THEN
+                               ITERATE  loop_label;
+                           ELSE
+                               SET  str = CONCAT(str,x,',');
+                           END  IF;
+ 
+               END LOOP;    
+               SELECT str;
+       END$$
+ DELIMITER ;
+The stored procedure only constructs string with even numbers e.g., 2, 4, 6, etc.
+We put a loop_label  loop label before the LOOP statement.
+If the value of  x is greater than 10, the loop is terminated because of the LEAVE statement.
+If the value of the x is an odd number, the   ITERATE statement ignores everything below it and starts a 
+new iteration.
+If the value of the x is an even number, the block in the ELSE statement will build the string with even 
+numbers.
+
+
+-----------------------------------------------------------------------------------------------
+MySQL Cursor
+-----------------------------------------------------------------------------------------------
+Introduction to MySQL cursor
+To handle a result set inside a stored procedure, you use a cursor. A cursor allows you to iterate a set of rows returned by a query and process each row accordingly.
+
+MySQL cursor is read only, non-scrollable and asensitive.
+
+Read only: you cannot update data in the underlying table through the cursor.
+Non-scrollable: you can only fetch rows in the order determined by the SELECT statement. You cannot fetch rows in the reversed order. In addition, you cannot skip rows or jump to a specific row in the result set.
+Asensitive: there are two kinds of cursors: asensitive cursor and insensitive cursor. An asensitive cursor points to the actual data, whereas an insensitive cursor uses a temporary copy of the data. An asensitive cursor performs faster than an insensitive cursor because it does not have to make a temporary copy of data. However, any change that made to the data from other connections will affect the data that is being used by an asensitive cursor, therefore it is safer if you don’t update the data that is being used by an asensitive cursor. MySQL cursor is asensitive.
+You can use MySQL cursors in stored procedures, stored functions and triggers.
+
+Working with MySQL cursor
+First, you have to declare a cursor by using the DECLARE statement:
+
+DECLARE cursor_name CURSOR FOR SELECT_statement;
+
+The cursor declaration must be after any variable declaration. 
+If you declare a cursor before variables declaration, MySQL will issue an error. 
+A cursor must always be associated with a SELECT statement.
+
+Next, you open the cursor by using the OPEN statement. 
+The OPEN statement initializes the result set for the cursor therefore you must call the OPEN statement 
+before fetching rows from the result set.
+
+OPEN cursor_name;
+Then, you use the FETCH statement to retrieve the next row pointed by the cursor and 
+move the cursor to the next row in the result set.
+
+FETCH cursor_name INTO variables list;
+After that, you can check to see if there is any row available before fetching it.
+
+Finally, you call the CLOSE statement to deactivate the cursor and release the memory associated with 
+it as follows:
+
+CLOSE cursor_name;
+When the cursor is no longer used, you should close it.
+
+When working with MySQL cursor, you must also declare a NOT FOUND handler to handle the situation when 
+the cursor could not find any row. Because each time you call the FETCH statement, the cursor attempts 
+to read the next row in the result set. When the cursor reaches the end of the result set, it will not 
+be able to get the data, and a condition is raised. The handler is used to handle this condition.
+
+To declare a NOT FOUND handler, you use the following syntax:
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = 1;
+Where finished is a variable to indicate that the cursor has reached the end of the result set. 
+Notice that the handler declaration must appear after variable and cursor declaration inside the 
+stored procedures.
+
+MySQL Cursor Example
+We are going to develop a stored procedure that builds an email list of all employees in the employees 
+table in the MySQL sample database.
+
+First, we declare some variables, a cursor for looping over the emails of employees, and a NOT FOUND handler:
+
+DECLARE finished INTEGER DEFAULT 0;
+DECLARE email varchar(255) DEFAULT "";
+ 
+-- declare cursor for employee email
+DEClARE email_cursor CURSOR FOR 
+ SELECT email FROM employees;
+ 
+-- declare NOT FOUND handler
+DECLARE CONTINUE HANDLER 
+FOR NOT FOUND SET finished = 1;
+Next, we open the email_cursor by using the OPEN statement:
+
+OPEN email_cursor;
+Then, we iterate the email list, and concatenate all emails where each email is separated by a semicolon(;):
+
+get_email: LOOP
+ FETCH email_cursor INTO v_email;
+ IF v_finished = 1 THEN 
+ LEAVE get_email;
+ END IF;
+ -- build email list
+ SET email_list = CONCAT(v_email,";",email_list);
+END LOOP get_email;
+After that, inside the loop we used the  v_finished variable to check if there is any email in the 
+list to terminate the loop.
+
+Finally, we close the cursor using the CLOSE statement:
+
+CLOSE email_cursor;
+The build_email_list stored procedure is as follows:
+
+DELIMITER $$
+ 
+CREATE PROCEDURE build_email_list (INOUT email_list varchar(4000))
+BEGIN
+ 
+ DECLARE v_finished INTEGER DEFAULT 0;
+        DECLARE v_email varchar(100) DEFAULT "";
+ 
+ -- declare cursor for employee email
+ DEClARE email_cursor CURSOR FOR 
+ SELECT email FROM employees;
+ 
+ -- declare NOT FOUND handler
+ DECLARE CONTINUE HANDLER 
+        FOR NOT FOUND SET v_finished = 1;
+ 
+ OPEN email_cursor;
+ 
+ get_email: LOOP
+ 
+ FETCH email_cursor INTO v_email;
+ 
+ IF v_finished = 1 THEN 
+ LEAVE get_email;
+ END IF;
+ 
+ -- build email list
+ SET email_list = CONCAT(v_email,";",email_list);
+ 
+ END LOOP get_email;
+ 
+ CLOSE email_cursor;
+ 
+END$$
+ 
+DELIMITER ;
+You can test the build_email_list stored procedure using the following script:
+
+SET @email_list = "";
+CALL build_email_list(@email_list);
+SELECT @email_list;
+In this tutorial, we have shown you how to use MySQL cursor to iterate a result set and process 
+each row accordingly.
+
+
+
+
+
+
+
