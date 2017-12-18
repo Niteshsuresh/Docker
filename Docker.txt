@@ -2,8 +2,6 @@ FROM queeno/ubuntu-desktop
 
 RUN rm -rf /var/lib/apt/lists/*
 
-# Install curl
-RUN apt-get install curl
 # Install Java.
 RUN \
   echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
@@ -11,7 +9,8 @@ RUN \
   apt-get update && \
   apt-get install -y oracle-java8-installer && \
   rm -rf /var/lib/apt/lists/* && \
-  rm -rf /var/cache/oracle-jdk8-installer
+  rm -rf /var/cache/oracle-jdk8-installer && \
+  apt-get install curl
 
 
 # Define working directory.
