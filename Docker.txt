@@ -1,5 +1,7 @@
 FROM queeno/ubuntu-desktop
 
+rm -rf /var/lib/apt/lists/*
+
 # Install curl
 RUN apt install curl
 # Install Java.
